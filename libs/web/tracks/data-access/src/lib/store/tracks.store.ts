@@ -1,45 +1,46 @@
-import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { GenericState } from '@angular-spotify/web/shared/data-access/models';
 import {
   PlayerApiService,
   TrackApiService
 } from '@angular-spotify/web/shared/data-access/spotify-api';
-import { switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { SelectorUtil } from '@angular-spotify/web/shared/utils';
 import { Injectable } from '@angular/core';
+import { FeatureStore } from 'mini-rx-store';
+import { EMPTY } from 'rxjs';
 
 type TracksState = GenericState<SpotifyApi.UsersSavedTracksResponse>;
 
 @Injectable()
-export class TracksStore extends ComponentStore<TracksState> {
+export class TracksStore extends FeatureStore<TracksState> {
   loadTracks = this.effect((params$) =>
     params$.pipe(
       tap(() => {
-        this.patchState({
+        this.setState({
           status: 'loading',
           error: null
         });
       }),
       switchMap(() =>
         this.trackApi.getUserSavedTracks().pipe(
-          tapResponse(
+          tap(
             (response) => {
-              this.patchState({
+              this.setState({
                 data: response,
                 status: 'success',
                 error: ''
               });
-            },
-            (error) => {
-              this.patchState({
+            }),
+            catchError((error) => {
+              this.setState({
                 status: 'error',
                 error: error as string
               });
-            }
+              return EMPTY;
+            })
           )
         )
       )
-    )
   );
 
   playTrack = this.effect<{ track: SpotifyApi.TrackObjectFull }>((params$) =>
@@ -61,6 +62,6 @@ export class TracksStore extends ComponentStore<TracksState> {
   }));
 
   constructor(private trackApi: TrackApiService, private playerApi: PlayerApiService) {
-    super(<TracksState>{});
+    super('tracks', <TracksState>{});
   }
 }
