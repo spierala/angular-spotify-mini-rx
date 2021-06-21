@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Store } from 'mini-rx-store';
 import { ofType } from 'ts-action-operators';
 import { EMPTY } from 'rxjs';
-import { catchError, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { getPlaylistTracksState } from './playlist-tracks.selector';
 import {
   loadPlaylistTracks,
@@ -29,7 +29,7 @@ export class PlaylistTracksEffect {
       filter(([{ playlistId }, playlistTracks]) => {
         return !playlistTracks.data?.has(playlistId);
       }),
-      mergeMap(([{ playlistId }]) =>
+      switchMap(([{ playlistId }]) =>
         this.playlistsApi.getTracks(playlistId).pipe(
           map((playlistTracks) =>
             loadPlaylistTracksSuccess({

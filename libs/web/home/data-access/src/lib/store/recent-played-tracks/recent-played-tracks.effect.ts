@@ -3,7 +3,7 @@ import { PlayerApiService } from '@angular-spotify/web/shared/data-access/spotif
 import { Actions } from 'mini-rx-store';
 import { ofType } from 'ts-action-operators';
 import { loadRecentTracks, loadRecentTracksSuccess } from './recent-played-tracks.action';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -13,7 +13,7 @@ export class RecentPlayedTracksEffect {
   loadRecentTracks$ =
     this.actions$.pipe(
       ofType(loadRecentTracks),
-      mergeMap(() =>
+      switchMap(() =>
         this.playerApi.getRecentPlayedTracks().pipe(
           map((response) =>
             loadRecentTracksSuccess({

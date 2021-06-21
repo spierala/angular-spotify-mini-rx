@@ -3,7 +3,7 @@ import { GenericState } from '@angular-spotify/web/shared/data-access/models';
 import { RouterUtil, SelectorUtil } from '@angular-spotify/web/shared/utils';
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
-import { catchError, filter, mergeMap, pluck, switchMap, tap } from 'rxjs/operators';
+import { catchError, filter, pluck, switchMap, tap } from 'rxjs/operators';
 import { ArtistApiService } from '@angular-spotify/web/shared/data-access/spotify-api';
 import { FeatureStore } from 'mini-rx-store';
 
@@ -39,7 +39,7 @@ export class ArtistStore extends FeatureStore<ArtistState> {
           error: null
         });
       }),
-      mergeMap(({ artistId }) =>
+      switchMap(({ artistId }) =>
         this.artistApi.getArtist(artistId).pipe(
           tap(
             (artist) => {

@@ -1633,6 +1633,52 @@
           }
         }
       }
+    },
+    "web-artist-ui-artist-top-track": {
+      "projectType": "library",
+      "root": "libs/web/artist/ui/artist-top-track",
+      "sourceRoot": "libs/web/artist/ui/artist-top-track/src",
+      "prefix": "as",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/artist/ui/artist-top-track/src/**/*.ts",
+              "libs/web/artist/ui/artist-top-track/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/artist/ui/artist-top-track"],
+          "options": {
+            "jestConfig": "libs/web/artist/ui/artist-top-track/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "web-tracks-data-access": {
+      "root": "libs/web/tracks/data-access",
+      "sourceRoot": "libs/web/tracks/data-access/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/web/tracks/data-access/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/tracks/data-access"],
+          "options": {
+            "jestConfig": "libs/web/tracks/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

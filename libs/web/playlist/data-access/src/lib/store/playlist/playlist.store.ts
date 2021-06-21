@@ -8,7 +8,7 @@ import { RouteUtil, SelectorUtil } from '@angular-spotify/web/shared/utils';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, EMPTY, Observable } from 'rxjs';
-import { catchError, filter, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import {
   getPlaylistTracksById,
   getPlaylistTracksLoading,
@@ -78,7 +78,7 @@ export class PlaylistStore extends FeatureStore<PlaylistState> {
         });
       }),
       map(([params]) => params),
-      mergeMap(({ playlistId }) =>
+      switchMap(({ playlistId }) =>
         this.playlistsApi.getById(playlistId).pipe(
           tap(
             (playlist) => {

@@ -1,6 +1,6 @@
 import { GenericState } from '@angular-spotify/web/shared/data-access/models';
 import { Injectable } from '@angular/core';
-import { catchError, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { ArtistApiService } from '@angular-spotify/web/shared/data-access/spotify-api';
 import { AuthStore } from '@angular-spotify/web/auth/data-access';
 import { ArtistStore } from './artist.store';
@@ -25,12 +25,12 @@ const getVm = createSelector(getData, getStatus, getError, (data, status, error)
 export class ArtistTopTracksStore extends FeatureStore<ArtistTopTracksState> {
   readonly vm$ = this.select(getVm);
 
-  loadArtistTopTracks = this.effect<{ artistId: string }>((params$) =>
+  loadArtistTopTracks = this.effect<string>((params$) =>
     params$.pipe(
-      filter((artist) => artist.artistId !== ''),
+      filter(artistId => !!artistId),
       tap(() => this.setState({ status: 'loading', error: null })),
       withLatestFrom(this.authStore.country$),
-      mergeMap(([{ artistId }, country]) =>
+      switchMap(([artistId, country]) =>
         this.artistApi.getArtistTopTracks(artistId, country).pipe(
           tap(
             (data) => {
@@ -55,8 +55,8 @@ export class ArtistTopTracksStore extends FeatureStore<ArtistTopTracksState> {
   ) {
     super(featureKey, <ArtistTopTracksState>{});
 
-    this.artistStore.artist$.pipe(map((artist) => ({ artistId: artist ? artist.id : '' }))).subscribe(
-      artistId => this.loadArtistTopTracks(artistId)
+    this.artistStore.artistIdParams$.subscribe(
+      artistIdParams => this.loadArtistTopTracks(artistIdParams)
     )
   }
 }

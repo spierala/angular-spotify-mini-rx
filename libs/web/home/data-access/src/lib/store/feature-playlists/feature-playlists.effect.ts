@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Actions } from 'mini-rx-store';
 import { ofType } from 'ts-action-operators';
 import { EMPTY } from 'rxjs';
-import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { loadFeaturedPlaylists, loadFeaturedPlaylistsSuccess } from './feature-playlists.action';
 
 @Injectable({ providedIn: 'root' })
@@ -19,7 +19,7 @@ export class FeaturePlaylistsEffect {
     this.actions$.pipe(
       ofType(loadFeaturedPlaylists),
       withLatestFrom(this.authStore.country$),
-      mergeMap(([_, country]) =>
+      switchMap(([_, country]) =>
         this.browseApi
           .getAllFeaturedPlaylists({
             limit: 50,

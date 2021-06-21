@@ -27,11 +27,11 @@ export class PlaylistTrackComponent implements OnInit {
       this.albumRouteUrl = RouteUtil.getAlbumRouteUrl(value.track.album.id);
     }
   }
-
+  
   private _item: SpotifyApi.PlaylistTrackObject | undefined;
 
   @Input() index!: number;
-  @Input() contextUri!: string | null;
+  @Input() contextUri!: string | null | undefined;
 
   isTrackPlaying$!: Observable<boolean>;
   albumRouteUrl?: string;
