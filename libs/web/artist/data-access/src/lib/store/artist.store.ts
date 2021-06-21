@@ -63,6 +63,6 @@ export class ArtistStore extends FeatureStore<ArtistState> {
   );
 
   constructor(private route: ActivatedRoute, private artistApi: ArtistApiService) {
-    super('Artist', <ArtistState>{});
+    super('artist', <ArtistState>{});
   }
 }

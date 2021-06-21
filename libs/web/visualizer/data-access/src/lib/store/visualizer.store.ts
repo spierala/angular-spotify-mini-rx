@@ -13,7 +13,7 @@ interface VisualizerState {
 @Injectable({ providedIn: 'root' })
 export class VisualizerStore extends FeatureStore<VisualizerState> {
   constructor(private router: Router, private location: Location) {
-    super('Visualizer', { isVisible: false, isShownAsPiP: false });
+    super('visualizer', { isVisible: false, isShownAsPiP: false });
 
     this.router.events
       .pipe(
@@ -21,7 +21,7 @@ export class VisualizerStore extends FeatureStore<VisualizerState> {
         map((e: NavigationEnd) =>
           e.urlAfterRedirects.includes(RouterUtil.Configuration.Visualizer)
         ),
-        withLatestFrom(this.select()),
+        withLatestFrom(this.state$),
         tap(([isAtVisualizerRoute, state]) => {
           if (isAtVisualizerRoute) {
             this.setState({ ...state, isVisible: true, isShownAsPiP: false });

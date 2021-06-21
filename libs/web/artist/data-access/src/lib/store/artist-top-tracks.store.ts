@@ -1,6 +1,6 @@
 import { GenericState } from '@angular-spotify/web/shared/data-access/models';
 import { Injectable } from '@angular/core';
-import { catchError, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { ArtistApiService } from '@angular-spotify/web/shared/data-access/spotify-api';
 import { AuthStore } from '@angular-spotify/web/auth/data-access';
 import { ArtistStore } from './artist.store';
@@ -10,8 +10,6 @@ import { EMPTY } from 'rxjs';
 interface ArtistTopTracksState extends GenericState<SpotifyApi.ArtistsTopTracksResponse> {
   artistId: string;
 }
-
-const featureKey = 'ArtistTopTracks';
 
 const featureSelector = createFeatureSelector<ArtistTopTracksState>(); // The feature key is not needed when selectors are executed on a FeatureStore
 const getData = createSelector(featureSelector, state => state.data);
@@ -53,7 +51,7 @@ export class ArtistTopTracksStore extends FeatureStore<ArtistTopTracksState> {
     private readonly authStore: AuthStore,
     private readonly artistApi: ArtistApiService
   ) {
-    super(featureKey, <ArtistTopTracksState>{});
+    super('artistTopTracks', <ArtistTopTracksState>{});
 
     this.artistStore.artistIdParams$.subscribe(
       artistIdParams => this.loadArtistTopTracks(artistIdParams)

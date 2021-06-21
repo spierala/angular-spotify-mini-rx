@@ -31,16 +31,16 @@ export class TracksStore extends FeatureStore<TracksState> {
                 error: ''
               });
             }),
-            catchError((error) => {
-              this.setState({
-                status: 'error',
-                error: error as string
-              });
-              return EMPTY;
-            })
-          )
+          catchError((error) => {
+            this.setState({
+              status: 'error',
+              error: error as string
+            });
+            return EMPTY;
+          })
         )
       )
+    )
   );
 
   playTrack = this.effect<{ track: SpotifyApi.TrackObjectFull }>((params$) =>
