@@ -1,4 +1,4 @@
-# Angular Spotify
+# Angular Spotify (Refactored to [MiniRx Store](https://github.com/spierala/mini-rx-store) - The RxJS Redux Store)
 
 A simple Spotify client built with Angular 11, Nx workspace, ngrx, TailwindCSS and ng-zorro.
 
