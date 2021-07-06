@@ -1,10 +1,10 @@
-import { Store } from '@ngrx/store';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthStore } from '@angular-spotify/web/auth/data-access';
 import { PlaybackService, PlaybackStore } from '@angular-spotify/web/shared/data-access/store';
 import { loadPlaylists } from '@angular-spotify/web/playlist/data-access';
 import { VisualizerStore } from '@angular-spotify/web/visualizer/data-access';
 import { filter, map } from 'rxjs/operators';
+import { Store } from 'mini-rx-store';
 
 @Component({
   selector: 'as-layout',

@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
 
 import {
   SETTINGS_FEATURE_KEY,
@@ -8,12 +6,19 @@ import {
   SettingsEffects,
   SettingsFacade
 } from '@angular-spotify/web/settings/data-access';
+import { EffectsModule, StoreModule } from 'mini-rx-store-ng';
 
 @NgModule({
   imports: [
     StoreModule.forFeature(SETTINGS_FEATURE_KEY, settingsReducer),
-    EffectsModule.forFeature([SettingsEffects])
+    // Provide service in module constructor instead (because MiniRx has no `dispatch: false` yet for effects)
+    // EffectsModule.forFeature([SettingsEffects])
   ],
   providers: [SettingsFacade]
 })
-export class SettingsModule {}
+export class SettingsModule {
+  constructor(
+    private settingsEffects: SettingsEffects
+  ) {
+  }
+}
